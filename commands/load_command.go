@@ -279,8 +279,11 @@ func publishMessage(client *pubsub.Client, topic string, rows []models.StoreReco
 	//serialize storerecord collection
 	payload, err := json.Marshal(rows)
 	if err != nil {
-		log.Info("Error serializing StoreRecord array")
+		log.Warn("Error serializing StoreRecord array")
+	} else {
+		log.Infof("Store records added to pubsub message %s", string(payload))
 	}
+
 	t := client.Topic(topic)
 	msg := pubsub.Message{
 		Data: payload,
